@@ -1,0 +1,192 @@
+<!--
+===============================================================================
+Ders Ekleme/Düzenleme Formu Template'i
+Bu sayfa yeni ders ekleme ve mevcut dersleri düzenleme için kullanılır.
+Özellikler: Dropdown öğretim üyesi seçimi, dinamik form, validation
+===============================================================================
+-->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card-like">
+  <h2 class="text-primary-green mb-4">
+    {% if course %}📝 Ders Düzenle{% else %}➕ Yeni Ders Ekle{% endif %}
+  </h2>
+<!-- Ders bilgileri formu -->
+<form method="post" class="row g-3"></form>
+  <div class="col-md-6">
+    <label class="form-label">📚 Ders Adı</label>
+    <input
+      type="text"
+      name="name"
+      class="form-control"
+      placeholder="Örn: Matematik I, Fizik II"
+      value="{{ course.name if course else '' }}"
+      required
+    />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">🏛️ Fakülte</label>
+    <input
+      type="text"
+      name="faculty"
+      class="form-control"
+      placeholder="Örn: Mühendislik Fakültesi"
+      value="{{ course.faculty if course else '' }}"
+      required
+    />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">🎓 Bölüm</label>
+    <input
+      type="text"
+      name="department"
+      class="form-control"
+      placeholder="Örn: Bilgisayar Mühendisliği"
+      value="{{ course.department if course else '' }}"
+      required
+    />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">👨‍🏫 Öğretim Üyesi</label>
+    <!-- Öğretim üyesi seçimi - Dropdown veya yeni ekleme -->
+    <div class="input-group">
+      <select name="instructor" class="form-select" id="instructorSelect" required>
+        <option value="">Öğretim üyesi seçin...</option>
+        {% for instructor in instructors %}
+        <option value="{{ instructor }}" 
+                {% if course and course.instructor == instructor %}selected{% endif %}>
+          {{ instructor }}
+        </option>
+        {% endfor %}
+        <option value="new">➕ Yeni öğretim üyesi ekle</option>
+      </select>
+    </div>
+    <!-- Yeni öğretim üyesi için gizli input alanı -->
+    <input
+      type="text"
+      id="newInstructorInput"
+      class="form-control mt-2"
+      placeholder="Yeni öğretim üyesi adı"
+      style="display: none;"
+    />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">👥 Öğrenci Sayısı</label>
+    <input
+      type="number"
+      name="student_count"
+      class="form-control"
+      min="1"
+      placeholder="Örn: 150"
+      value="{{ course.student_count if course else '' }}"
+      required
+    />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">⏱️ Sınav Süresi (dk)</label>
+    <select name="exam_duration" class="form-select" required>
+      {% set cur_dur = course.exam_duration if course else None %}
+      <option value="30" {% if cur_dur == 30 %}selected{% endif %}>30</option>
+      <option value="60" {% if cur_dur == 60 %}selected{% endif %}>60</option>
+      <option value="90" {% if cur_dur == 90 %}selected{% endif %}>90</option>
+      <option value="120" {% if cur_dur == 120 %}selected{% endif %}>120</option>
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">📝 Sınav Türü</label>
+    <select name="exam_type" class="form-select" required>
+      {% set cur_type = course.exam_type if course else None %}
+      <option value="vize" {% if cur_type == 'vize' %}selected{% endif %}>Vize</option>
+      <option value="final" {% if cur_type == 'final' %}selected{% endif %}>Final</option>
+    </select>
+  </div>
+  <!-- Sınav varlığı checkbox'ı -->
+  <div class="col-md-4 d-flex align-items-center">
+    <div class="form-check mt-4">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        name="has_exam"
+        id="has_exam"
+        {% if not course or course.has_exam %}checked{% endif %}
+      />
+      <label class="form-check-label" for="has_exam">Bu derste sınav var</label>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">⚠️ Özel Durum (opsiyonel)</label>
+    <input
+      type="text"
+      name="special_case"
+      class="form-control"
+      placeholder="Örn: Laboratuvar gerekli"
+      value="{{ course.special_case if course else '' }}"
+    />
+  </div>
+  <!-- Form butonları - Geri dön ve kaydet -->
+  <div class="col-12 d-flex justify-content-between">
+    <a href="{{ url_for('main.list_courses') }}" class="btn btn-outline-secondary">
+      ← Geri Dön
+    </a>
+    <button type="submit" class="btn btn-success">
+      {% if course %}💾 Güncelle{% else %}✅ Kaydet{% endif %}
+    </button>
+  </div>
+</form>
+</div>
+{% endblock %}
+
+<!-- JavaScript - Dinamik öğretim üyesi seçimi -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const instructorSelect = document.getElementById('instructorSelect');
+    const newInstructorInput = document.getElementById('newInstructorInput');
+    
+    // Dropdown değişiklik olayını dinle
+    instructorSelect.addEventListener('change', function() {
+        if (this.value === 'new') {
+            // Yeni öğretim üyesi seçildi - input alanını göster
+            newInstructorInput.style.display = 'block';
+            newInstructorInput.required = true;
+            newInstructorInput.focus();
+            
+            // Dropdown'ı gizle
+            this.style.display = 'none';
+            this.required = false;
+            
+            // Input'un name özelliğini instructor yap
+            newInstructorInput.name = 'instructor';
+        }
+    });
+    
+    // Yeni input alanına yazı yazıldığında geri dönüş butonu ekle
+    newInstructorInput.addEventListener('input', function() {
+        if (!document.getElementById('backToSelect')) {
+            const backButton = document.createElement('button');
+            backButton.type = 'button';
+            backButton.className = 'btn btn-outline-secondary btn-sm mt-1';
+            backButton.id = 'backToSelect';
+            backButton.innerHTML = '↩️ Listeden seç';
+            backButton.onclick = function() {
+                // Dropdown'a geri dön
+                instructorSelect.style.display = 'block';
+                instructorSelect.required = true;
+                instructorSelect.value = '';
+                
+                // Input alanını gizle ve temizle
+                newInstructorInput.style.display = 'none';
+                newInstructorInput.required = false;
+                newInstructorInput.value = '';
+                newInstructorInput.name = '';
+                
+                // Geri dönüş butonunu kaldır
+                this.remove();
+            };
+            newInstructorInput.parentNode.appendChild(backButton);
+        }
+    });
+});
+</script>
+
+

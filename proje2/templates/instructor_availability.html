@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Hoca Müsaitlikleri</h2>
+</div>
+
+<form method="post" class="row g-3 mb-4">
+  <div class="col-md-4">
+    <label class="form-label">Öğretim Üyesi Adı</label>
+    <input type="text" name="instructor_name" class="form-control" required />
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Tarih</label>
+    <input type="date" name="date" class="form-control" required />
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Başlangıç Saati</label>
+    <input type="time" name="start_time" class="form-control" required />
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Bitiş Saati</label>
+    <input type="time" name="end_time" class="form-control" required />
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <button type="submit" class="btn btn-success w-100">Ekle</button>
+  </div>
+</form>
+
+<table class="table table-striped table-bordered table-sm align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>Öğretim Üyesi</th>
+      <th>Tarih</th>
+      <th>Saat Aralığı</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in availabilities %}
+    <tr>
+      <td>{{ a.instructor_name }}</td>
+      <td>{{ a.date.strftime('%d.%m.%Y') }}</td>
+      <td>{{ a.start_time.strftime('%H:%M') }} - {{ a.end_time.strftime('%H:%M') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+

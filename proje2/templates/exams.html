@@ -1,0 +1,231 @@
+<!--
+===============================================================================
+Sınav Programı Görüntüleme Template'i
+Bu sayfa sınav programını tablo halinde gösterir ve filtreleme imkanı sunar.
+Özellikler: Filtreleme, export (CSV/PDF), istatistikler, gruplandırılmış görünüm
+===============================================================================
+-->
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Sayfa başlığı ve export butonları -->
+<div class="card-like mb-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h2 class="text-primary-green mb-2">📅 Sınav Programı</h2>
+      <p class="text-muted mb-0">Filtreleyin, dışa aktarın ve detaylı olarak inceleyin.</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a
+        href="{{ url_for('main.export_exams_csv', faculty=request.args.faculty, department=request.args.department, day=request.args.day) }}"
+        class="btn btn-outline-primary btn-sm"
+      >
+        📊 Excel İndir
+      </a>
+      <a
+        href="{{ url_for('main.export_exams_pdf', faculty=request.args.faculty, department=request.args.department, day=request.args.day) }}"
+        class="btn btn-outline-primary btn-sm"
+      >
+        📄 PDF İndir
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Filter Section -->
+<div class="card-like mb-4">
+  <h5 class="text-primary-green mb-3">🔍 Filtreleme Seçenekleri</h5>
+  <form class="row g-3">
+    <div class="col-md-4">
+      <label class="form-label">
+        <span class="icon">🏛️</span> Fakülte
+      </label>
+      <input
+        type="text"
+        name="faculty"
+        class="form-control"
+        value="{{ request.args.faculty or '' }}"
+        placeholder="{{ user.faculty if user and user.faculty else 'Fakülte adı girin...' }}"
+      />
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">
+        <span class="icon">🎓</span> Bölüm
+      </label>
+      <input
+        type="text"
+        name="department"
+        class="form-control"
+        value="{{ request.args.department or '' }}"
+        placeholder="{{ user.department if user and user.department else 'Bölüm adı girin...' }}"
+      />
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">
+        <span class="icon">📅</span> Tarih
+      </label>
+      <input 
+        type="date" 
+        name="day" 
+        class="form-control" 
+        value="{{ request.args.day or '' }}" 
+      />
+    </div>
+    <div class="col-12">
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+          🔍 Filtrele
+        </button>
+        <a href="{{ url_for('main.list_exams') }}" class="btn btn-outline-secondary">
+          🔄 Temizle
+        </a>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Results Section -->
+<div class="card-like">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="text-primary-green mb-0">📋 Sınav Listesi</h5>
+    <span class="badge bg-primary-green">{{ exams|length }} sınav bulundu</span>
+  </div>
+
+  {% if exams %}
+  <div class="table-container">
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>📚 Ders</th>
+            <th>👨‍🏫 Öğretim Üyesi</th>
+            <th>🏛️ Fakülte / Bölüm</th>
+            <th>🏫 Derslik</th>
+            <th>📅 Tarih</th>
+            <th>⏰ Saat</th>
+            <th>⏱️ Süre</th>
+            <th>📝 Tür</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% set grouped_exams = {} %}
+          {% for exam in exams %}
+            {% set key = exam.course.id ~ '_' ~ exam.date.strftime('%Y%m%d') ~ '_' ~ exam.start_time.strftime('%H%M') %}
+            {% if key not in grouped_exams %}
+              {% set _ = grouped_exams.update({key: {'exam': exam, 'classrooms': []}}) %}
+            {% endif %}
+            {% set _ = grouped_exams[key]['classrooms'].append(exam.classroom) %}
+          {% endfor %}
+          
+          {% for key, group in grouped_exams.items() %}
+          {% set exam = group['exam'] %}
+          {% set classrooms = group['classrooms'] %}
+          <tr>
+            <td>
+              <strong>{{ exam.course.name }}</strong>
+              {% if exam.course.special_case %}
+              <br><small class="text-warning">⚠️ {{ exam.course.special_case }}</small>
+              {% endif %}
+            </td>
+            <td>{{ exam.course.instructor }}</td>
+            <td>
+              <div class="small">
+                <div><strong>{{ exam.course.faculty }}</strong></div>
+                <div class="text-muted">{{ exam.course.department }}</div>
+              </div>
+            </td>
+            <td>
+              {% for classroom in classrooms %}
+              <span class="badge bg-light text-dark me-1 mb-1">{{ classroom.name }}</span>
+              {% endfor %}
+              <br><small class="text-muted">
+                Toplam Kapasite: {{ classrooms|sum(attribute='capacity') }} 
+                (Öğrenci: {{ exam.course.student_count }})
+              </small>
+            </td>
+            <td>
+              <strong>{{ exam.date.strftime('%d.%m.%Y') }}</strong>
+              <br><small class="text-muted">{{ exam.date|turkish_day }}</small>
+            </td>
+            <td>
+              <div class="text-center">
+                <div><strong>{{ exam.start_time.strftime('%H:%M') }}</strong></div>
+                <div class="text-muted">↓</div>
+                <div><strong>{{ exam.end_time.strftime('%H:%M') }}</strong></div>
+              </div>
+            </td>
+            <td class="text-center">
+              <span class="badge bg-primary-green text-white">
+                {{ exam.course.exam_duration }} dk
+              </span>
+            </td>
+            <td>
+              <span class="badge 
+                {% if exam.course.exam_type == 'Vize' %}bg-warning text-dark
+                {% elif exam.course.exam_type == 'Final' %}bg-danger
+                {% else %}bg-info{% endif %}">
+                {{ exam.course.exam_type }}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <div class="mb-3">
+      <span style="font-size: 4rem;">📅</span>
+    </div>
+    <h4 class="text-muted mb-2">Henüz sınav programı bulunmuyor</h4>
+    <p class="text-muted mb-3">
+      {% if user and user.role == 'admin' %}
+      Sınav programı oluşturmak için planlamayı başlatın.
+      {% else %}
+      Lütfen daha sonra tekrar kontrol edin veya filtreleme seçeneklerini değiştirin.
+      {% endif %}
+    </p>
+    {% if user and user.role == 'admin' %}
+    <form action="{{ url_for('main.run_scheduler') }}" method="post" class="d-inline-block">
+      <button type="submit" class="btn btn-success btn-lg">
+        ⚙️ Sınav Programını Oluştur
+      </button>
+    </form>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<!-- Quick Stats -->
+{% if exams %}
+<div class="row mt-4 g-3">
+  <div class="col-md-3">
+    <div class="card-like text-center stats-card">
+      <h6 class="text-primary-green">📚 Toplam Ders</h6>
+      <h4 class="mb-0">{{ stats.unique_courses_count if stats else (exams|map(attribute='course.id')|unique|list|length) }}</h4>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card-like text-center stats-card">
+      <h6 class="text-primary-green">🏫 Kullanılan Derslik</h6>
+      <h4 class="mb-0">{{ stats.total_classrooms if stats else (exams|map(attribute='classroom.id')|unique|list|length) }}</h4>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card-like text-center stats-card">
+      <h6 class="text-primary-green">📅 Sınav Günü</h6>
+      <h4 class="mb-0">{{ stats.unique_dates_count if stats else (exams|map(attribute='date')|unique|list|length) }}</h4>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card-like text-center stats-card">
+      <h6 class="text-primary-green">👥 Toplam Öğrenci</h6>
+      <h4 class="mb-0">{{ stats.total_students if stats else 0 }}</h4>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+

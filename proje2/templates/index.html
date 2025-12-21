@@ -1,0 +1,89 @@
+<!--
+===============================================================================
+Ana Sayfa Template'i
+Bu sayfa sistemin giriş sayfasıdır ve kullanıcı durumuna göre farklı içerik gösterir.
+Özellikler: Hero section, hızlı erişim butonları, kullanıcı karşılama
+===============================================================================
+-->
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Basit Hero Section - Ana başlık ve açıklama alanı -->
+<div class="hero-section">
+  <div class="hero-content">
+    <h1 class="hero-title">Sınav Programı Sistemi</h1>
+    <p class="hero-subtitle">
+      Otomatik sınav programı hazırlama ve yönetim sistemi
+    </p>
+
+    <!-- Call to Action Buttons - Ana eylem butonları -->
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+      {% if not user %}
+      <!-- Giriş yapmamış kullanıcılar için giriş butonu -->
+      <a href="{{ url_for('main.login') }}" class="btn btn-primary btn-lg">
+        Giriş Yap
+      </a>
+      {% else %}
+      <!-- Giriş yapmış kullanıcılar için ana butonlar -->
+      <a href="{{ url_for('main.list_exams') }}" class="btn btn-primary btn-lg">
+        Sınav Programını Görüntüle
+      </a>
+      <!-- Sadece admin kullanıcılar için özel butonlar -->
+      {% if user.role == 'admin' %}
+      <form action="{{ url_for('main.run_scheduler') }}" method="post" class="d-inline-block">
+        <button type="submit" class="btn btn-success btn-lg">
+          Planlamayı Başlat
+        </button>
+      </form>
+      <!-- Sınav programını sıfırlama butonu (onay ile) -->
+      <form action="{{ url_for('main.clear_schedule') }}" method="post" class="d-inline-block"
+            onsubmit="return confirm('Tüm sınav programını silmek istediğinize emin misiniz?');">
+        <button type="submit" class="btn btn-outline-danger btn-lg">
+          Programı Sıfırla
+        </button>
+      </form>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Basit İçerik Alanı - Kullanıcı karşılama ve hızlı erişim -->
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card-like text-center">
+      {% if user %}
+      <!-- Giriş yapmış kullanıcı için kişisel karşılama -->
+      <h3 class="text-primary-green mb-3">Hoş Geldiniz, {{ user.username }}</h3>
+      <p class="text-muted mb-4">
+        Sınav programlarını görüntüleyebilir ve yönetebilirsiniz.
+      </p>
+      {% else %}
+      <!-- Giriş yapmamış kullanıcı için genel bilgi -->
+      <h3 class="text-primary-green mb-3">Üniversite Sınav Planlama</h3>
+      <p class="text-muted mb-4">
+        Sisteme giriş yaparak sınav programlarına erişebilirsiniz.
+      </p>
+      {% endif %}
+      
+      <!-- Hızlı Erişim Butonları -->
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        <a href="{{ url_for('main.list_exams') }}" class="btn btn-outline-primary">
+          📅 Sınav Programı
+        </a>
+        <!-- Yetkili kullanıcılar için ek butonlar -->
+        {% if user and (user.role == 'admin' or user.role == 'department_officer') %}
+        <a href="{{ url_for('main.list_courses') }}" class="btn btn-outline-primary">
+          📚 Dersler
+        </a>
+        <a href="{{ url_for('main.list_classrooms') }}" class="btn btn-outline-primary">
+          🏫 Derslikler
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

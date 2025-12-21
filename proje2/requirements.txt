@@ -1,0 +1,6 @@
+flask==3.0.0
+flask_sqlalchemy==3.1.1
+flask_migrate==4.0.5
+pymysql==1.1.0
+reportlab==4.1.0
+

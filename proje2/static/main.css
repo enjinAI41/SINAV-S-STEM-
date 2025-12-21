@@ -1,0 +1,917 @@
+/*
+===============================================================================
+Üniversite Sınav Programı Hazırlama Sistemi - Ana CSS Dosyası
+Bu dosya tüm sayfalarda kullanılan stil tanımlarını içerir.
+Tasarım: Modern, yeşil renk paleti, responsive, kullanıcı dostu
+===============================================================================
+*/
+
+/* CSS Değişkenleri - Renk Paleti */
+:root {
+  /* Ana yeşil tonları */
+  --primary-green: #16a085;
+  --primary-green-dark: #138d75;
+  --primary-green-light: #48c9b0;
+  --secondary-green: #27ae60;
+  --accent-green: #2ecc71;
+  
+  /* Temel renkler */
+  --white: #ffffff;
+  --light-gray: #f8f9fa;
+  --medium-gray: #e9ecef;
+  --dark-gray: #6c757d;
+  
+  /* Metin renkleri */
+  --text-dark: #34495e;
+  --text-light: #5d6d7e;
+  
+  /* Gölge efektleri */
+  --shadow-light: rgba(22, 160, 133, 0.1);
+  --shadow-medium: rgba(22, 160, 133, 0.15);
+  --shadow-strong: rgba(22, 160, 133, 0.25);
+}
+
+/* Temel Stiller */
+* {
+  box-sizing: border-box; /* Tüm elementler için box-sizing ayarı */
+}
+
+body {
+  /* Arka plan: Açık gri gradyan */
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  /* Font ailesi: Modern, okunabilir fontlar */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6; /* Satır yüksekliği */
+  color: var(--text-dark); /* Ana metin rengi */
+  margin: 0;
+  padding: 0;
+  transition: padding-top 0.3s ease; /* Sticky nav için geçiş efekti */
+}
+
+/* Tipografi - Başlık Stilleri */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600; /* Orta kalınlık */
+  color: var(--primary-green); /* Yeşil renk */
+  margin-bottom: 1rem; /* Alt boşluk */
+}
+
+/* Başlık boyutları */
+h1 { font-size: 2.5rem; font-weight: 700; } /* En büyük başlık */
+h2 { font-size: 2rem; } /* İkinci seviye başlık */
+h3 { font-size: 1.5rem; } /* Üçüncü seviye başlık */
+
+/* Paragraf stilleri */
+p {
+  color: var(--text-light); /* Açık gri metin */
+  margin-bottom: 1rem; /* Alt boşluk */
+}
+
+/* Konteyner Stilleri */
+main.container {
+  max-width: 1200px;
+  padding: 0 1rem;
+}
+
+/* Header/Navbar Stilleri */
+.navbar {
+  background: var(--white) !important;
+  box-shadow: 0 2px 20px var(--shadow-light);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--primary-green) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Logo emoji kaldırıldı - artık gerçek logo resmi kullanılıyor */
+
+.navbar-nav .nav-link {
+  color: var(--primary-green) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin: 0 0.25rem;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: var(--light-gray);
+  color: var(--primary-green) !important;
+  transform: translateY(-1px);
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+  background-color: var(--light-gray);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2316a085' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Hero Section - Sadeleştirilmiş */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+  color: var(--white);
+  padding: 3rem 0;
+  margin: -1.5rem -15px 2rem -15px;
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--white);
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+}
+
+/* Hero özellikleri basitlik için kaldırıldı */
+
+/* Kart Stilleri */
+.card-like {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px var(--shadow-light);
+  border: 1px solid var(--medium-gray);
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.card-like:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 50px var(--shadow-medium);
+}
+
+.stats-card {
+  background: linear-gradient(135deg, var(--white) 0%, var(--light-gray) 100%);
+  border-left: 4px solid var(--primary-green);
+}
+
+/* Buton Stilleri */
+.btn {
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border: none;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+  color: var(--white);
+  box-shadow: 0 4px 15px var(--shadow-medium);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--shadow-strong);
+  background: linear-gradient(135deg, var(--primary-green-dark) 0%, var(--primary-green) 100%);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--accent-green) 0%, var(--secondary-green) 100%);
+  color: var(--white);
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+}
+
+.btn-outline-danger {
+  border: 2px solid #e74c3c;
+  color: #e74c3c;
+  background: transparent;
+}
+
+.btn-outline-danger:hover {
+  background: #e74c3c;
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.btn-lg {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+}
+
+/* Tablo Stilleri */
+.table-container {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px var(--shadow-light);
+  border: 1px solid var(--medium-gray);
+}
+
+table {
+  margin-bottom: 0;
+  border: none;
+}
+
+table th {
+  background: var(--light-gray) !important;
+  color: var(--primary-green);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 1rem;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+table td {
+  padding: 1rem;
+  border: none;
+  border-bottom: 1px solid var(--medium-gray);
+  font-size: 0.95rem;
+}
+
+tbody tr {
+  transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: var(--light-gray) !important;
+  transform: scale(1.01);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Form Stilleri */
+.form-control {
+  border-radius: 12px;
+  border: 2px solid var(--medium-gray);
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 0.2rem var(--shadow-light);
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--primary-green);
+  margin-bottom: 0.5rem;
+}
+
+/* Uyarı Stilleri */
+.alert {
+  border-radius: 12px;
+  border: none;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(39, 174, 96, 0.1) 100%);
+  color: var(--secondary-green);
+  border-left: 4px solid var(--accent-green);
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(192, 57, 43, 0.1) 100%);
+  color: #c0392b;
+  border-left: 4px solid #e74c3c;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, rgba(241, 196, 15, 0.1) 0%, rgba(230, 126, 34, 0.1) 100%);
+  color: #d68910;
+  border-left: 4px solid #f39c12;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(41, 128, 185, 0.1) 100%);
+  color: #2980b9;
+  border-left: 4px solid #3498db;
+}
+
+/* Rozet Stilleri */
+.badge {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+}
+
+.bg-light {
+  background: var(--light-gray) !important;
+  color: var(--primary-green) !important;
+}
+
+/* İkon Stilleri */
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: currentColor;
+}
+
+/* Animasyonlar */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .card-like {
+    padding: 1.5rem;
+    margin: 0 -0.5rem 2rem -0.5rem;
+  }
+  
+  table {
+    font-size: 0.8rem;
+  }
+  
+  table th,
+  table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .btn-lg {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .hero-title {
+    font-size: 1.75rem;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .d-flex.gap-2 {
+    flex-direction: column;
+  }
+}
+
+/* Yardımcı Sınıflar */
+.text-primary-green {
+  color: var(--primary-green) !important;
+}
+
+.bg-primary-green {
+  background-color: var(--primary-green) !important;
+}
+
+.border-primary-green {
+  border-color: var(--primary-green) !important;
+}
+
+.shadow-soft {
+  box-shadow: 0 5px 20px var(--shadow-light) !important;
+}
+
+.rounded-lg {
+  border-radius: 12px !important;
+}
+
+.rounded-xl {
+  border-radius: 16px !important;
+}
+
+
+/* Yazdırma Stilleri */
+@media print {
+  .navbar,
+  .btn,
+  .alert,
+  footer {
+    display: none !important;
+  }
+  
+  .card-like {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    page-break-inside: avoid;
+  }
+  
+  .hero-section {
+    background: white !important;
+    color: var(--primary-green) !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+  
+  .table-container {
+    box-shadow: none !important;
+  }
+  
+  table {
+    border-collapse: collapse !important;
+  }
+  
+  th, td {
+    border: 1px solid #ddd !important;
+  }
+}
+
+/* Logo Stilleri */
+.navbar-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Gelişmiş Dropdown Stilleri */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 10px 40px var(--shadow-light);
+  border-radius: 12px;
+  padding: 0.5rem;
+}
+
+.dropdown-item {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: var(--light-gray);
+  color: var(--primary-green);
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+  border-color: var(--medium-gray);
+}
+
+/* Yükleme Durumları */
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Gelişmiş Odaklanma Durumları */
+.form-control:focus,
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--shadow-light);
+}
+
+/* Erişilebilirlik İyileştirmeleri */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Yüksek Kontrast Modu Desteği */
+@media (prefers-contrast: high) {
+  :root {
+    --primary-green: #0d7377;
+    --secondary-green: #14a085;
+    --text-dark: #0d7377;
+    --medium-gray: #5d6d7e;
+  }
+  
+  .card-like {
+    border: 2px solid var(--primary-green);
+  }
+}
+
+/* Azaltılmış Hareket Desteği */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Karanlık Mod Desteği (Gelecek Geliştirme) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #f8f9fa;
+    --light-gray: #e9ecef;
+    --medium-gray: #dee2e6;
+    --text-dark: #16a085;
+    --text-light: #5d6d7e;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+}/* Stic
+ky Navigation Styles */
+.sticky-nav {
+  position: fixed;
+  top: -80px;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--medium-gray);
+  box-shadow: 0 4px 30px var(--shadow-light);
+  z-index: 1050;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.75rem 0;
+}
+
+.sticky-nav.visible {
+  top: 0;
+  transform: translateY(0);
+}
+
+.sticky-nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sticky-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sticky-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.sticky-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primary-green);
+}
+
+/* Sticky Hamburger Butonu */
+.sticky-hamburger {
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  padding: 8px;
+}
+
+.sticky-hamburger:hover {
+  background-color: var(--light-gray);
+}
+
+.sticky-hamburger span {
+  width: 20px;
+  height: 2px;
+  background-color: var(--primary-green);
+  transition: all 0.3s ease;
+  border-radius: 1px;
+}
+
+.sticky-hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.sticky-hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.sticky-hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Sticky Menü */
+.sticky-menu {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 320px;
+  height: 100vh;
+  background: var(--white);
+  box-shadow: -10px 0 30px var(--shadow-medium);
+  z-index: 1051;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+.sticky-menu.open {
+  right: 0;
+}
+
+.sticky-menu-content {
+  padding: 5rem 0 2rem 0;
+}
+
+.sticky-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  color: var(--text-dark);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
+}
+
+.sticky-menu-item:hover {
+  background-color: var(--light-gray);
+  color: var(--primary-green);
+  border-left-color: var(--primary-green);
+  transform: translateX(4px);
+}
+
+.sticky-menu-item.active {
+  background-color: rgba(22, 160, 133, 0.1);
+  color: var(--primary-green);
+  border-left-color: var(--primary-green);
+  font-weight: 600;
+}
+
+.sticky-menu-item.logout:hover {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border-left-color: #e74c3c;
+}
+
+.sticky-menu-item.login {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+  color: var(--white);
+  margin: 1rem 2rem;
+  border-radius: 12px;
+  border-left: none;
+  font-weight: 600;
+}
+
+.sticky-menu-item.login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--shadow-medium);
+}
+
+.sticky-menu-icon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+.sticky-menu-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.sticky-menu-divider {
+  height: 1px;
+  background-color: var(--medium-gray);
+  margin: 1rem 2rem;
+}
+
+.sticky-menu-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background-color: var(--light-gray);
+  margin: 0 2rem 1rem 2rem;
+  border-radius: 12px;
+}
+
+.sticky-user-info {
+  flex: 1;
+}
+
+.sticky-username {
+  font-weight: 600;
+  color: var(--primary-green);
+  font-size: 0.95rem;
+}
+
+.sticky-userrole {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  text-transform: capitalize;
+}
+
+/* Sticky Overlay */
+.sticky-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1049;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.sticky-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Menü açıkken body scroll kilidi */
+body.sticky-menu-open {
+  overflow: hidden;
+}
+
+/* Sticky nav için responsive ayarlamalar */
+@media (max-width: 768px) {
+  .sticky-menu {
+    width: 280px;
+    right: -280px;
+  }
+  
+  .sticky-menu-content {
+    padding-top: 4rem;
+  }
+  
+  .sticky-menu-item {
+    padding: 0.875rem 1.5rem;
+  }
+  
+  .sticky-menu-user {
+    margin: 0 1.5rem 1rem 1.5rem;
+  }
+  
+  .sticky-menu-divider {
+    margin: 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .sticky-menu {
+    width: 100%;
+    right: -100%;
+  }
+  
+  .sticky-nav-container {
+    padding: 0 0.75rem;
+  }
+}
+
+/* Animation for sticky nav appearance */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.sticky-nav.visible {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Ensure main content has proper spacing when sticky nav is visible */
+body.sticky-nav-visible {
+  padding-top: 0;
+}
+
+/* Hide sticky nav on print */
+@media print {
+  .sticky-nav,
+  .sticky-menu,
+  .sticky-overlay {
+    display: none !important;
+  }
+}/
+* Fix for navbar login button text color */
+.navbar .btn-primary {
+  color: var(--white) !important;
+}
+
+.navbar .btn-primary:hover {
+  color: var(--white) !important;
+}
+
+/* Ensure button text is always white */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  color: var(--white) !important;
+}
+
+.btn-success,
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+  color: var(--white) !important;
+}
