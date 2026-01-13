@@ -1,0 +1,8 @@
+Flask==2.3.3
+Flask-SQLAlchemy==3.0.5
+Flask-Migrate==4.0.5
+pandas==2.1.1
+openpyxl==3.1.2
+xlrd==2.0.1
+reportlab==4.0.4
+Werkzeug==2.3.7
